@@ -1,11 +1,5 @@
-import { TipoTransacao } from "./transacao/TipoTransacao.js";
-/*
-
-const Conta = {
-
-    
-}
-*/
+import Transacao from "./Transacao.js";
+import { TipoTransacao } from "../types/transacao/TipoTransacao.js";
 class Conta {
     _titular;
     _dataAbertura;
@@ -26,37 +20,37 @@ class Conta {
             return value;
         }) || [];
     }
-    get titular() {
+    getTitular() {
         return this._titular;
     }
-    set titular(newTitular) {
+    setTitular(newTitular) {
         this._titular = newTitular;
     }
-    get dataAbertura() {
+    getDataAbertura() {
         return this._dataAbertura;
     }
-    set dataAbertura(newDataAbertura) {
+    setDataAbertura(newDataAbertura) {
         this._dataAbertura = newDataAbertura;
     }
-    get dataEncerramento() {
+    getDataEncerramento() {
         return this._dataEncerramento;
     }
-    set dataEncerramento(newDataEncerramento) {
+    setDataEncerramento(newDataEncerramento) {
         this._dataEncerramento = newDataEncerramento;
     }
-    get saldo() {
+    getSaldo() {
         return this._saldo;
     }
     // set saldo(newSaldo: number) {
     //     this._saldo = newSaldo;
     // }
-    get limite() {
+    getLimite() {
         return this._limite;
     }
-    set limite(newLimite) {
+    setLimite(newLimite) {
         this._limite = newLimite;
     }
-    get transacoes() {
+    getTransacoes() {
         return this._transacoes;
     }
     // set transacoes(newTransacoes: Transacao[]) {
@@ -87,11 +81,14 @@ class Conta {
     }
     getGruposTransacoes() {
         const gruposTransacoes = [];
-        const listaTransacoes = structuredClone(this._transacoes);
-        const transacoesOrdenadas = listaTransacoes.sort((t1, t2) => t2.data.getTime() - t1.data.getTime());
+        const listaTransacoes = [];
+        this._transacoes.forEach(t => listaTransacoes.push(Transacao.clone(t)));
+        console.log(listaTransacoes.map(t => t instanceof Transacao));
+        const transacoesOrdenadas = listaTransacoes.sort((t1, t2) => new Date(t2.getData()).getTime() - new Date(t1.getData()).getTime());
         let labelAtualGrupoTransacao = "";
         for (let transacao of transacoesOrdenadas) {
-            let labelGrupoTransacao = transacao.data.toLocaleDateString("pt-br", { month: "long", year: "numeric" });
+            let dataTransacao = new Date(transacao.getData());
+            let labelGrupoTransacao = dataTransacao.toLocaleDateString("pt-br", { month: "long", year: "numeric" });
             if (labelAtualGrupoTransacao !== labelGrupoTransacao) {
                 labelAtualGrupoTransacao = labelGrupoTransacao;
                 gruposTransacoes.push({
@@ -104,12 +101,12 @@ class Conta {
         return gruposTransacoes;
     }
     registrarTransacao(novaTransacao) {
-        if (novaTransacao.tipoTransacao == TipoTransacao.DEPOSITO) {
-            this.depositar(novaTransacao.valor);
+        if (novaTransacao.getTipoTransacao() == TipoTransacao.DEPOSITO) {
+            this.depositar(novaTransacao.getValor());
         }
-        else if (novaTransacao.tipoTransacao == TipoTransacao.TRANSFERENCIA || novaTransacao.tipoTransacao == TipoTransacao.PAGAMENTO_BOLETO) {
-            this.debitar(novaTransacao.valor);
-            novaTransacao.valor *= -1;
+        else if (novaTransacao.getTipoTransacao() == TipoTransacao.TRANSFERENCIA || novaTransacao.getTipoTransacao() == TipoTransacao.PAGAMENTO_BOLETO) {
+            this.debitar(novaTransacao.getValor());
+            novaTransacao.setValor(novaTransacao.getValor() * -1);
         }
         else {
             throw new Error("Tipo de Transação é inválido!");

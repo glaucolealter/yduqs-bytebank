@@ -1,4 +1,4 @@
-import Conta from "../types/Conta.js";
+import Conta from "../models/Conta.js";
 import { FormatoData } from "../types/FormatoData.js";
 import { GrupoTransacao } from "../types/transacao/GrupoTransacao.js";
 import { formatarData, formatarMoeda } from "../utils/formatters.js";
@@ -7,7 +7,8 @@ const elementoRegistroTransacoesExtrato: HTMLElement = document.querySelector(".
 
 function montarExtrato(): void
 {
-    let gruposTransacoes: GrupoTransacao[] = Conta.getGruposTransacoes();
+    let conta = new Conta();
+    let gruposTransacoes: GrupoTransacao[] = conta.getGruposTransacoes();
 
     elementoRegistroTransacoesExtrato.innerHTML = "";
 
@@ -26,10 +27,10 @@ function montarExtrato(): void
 
             htmlTransacao += `<div class="transacao-item">
                                     <div class="transacao-info">
-                                        <span class="tipo">${transacao.tipoTransacao}</span>
-                                        <strong class="valor">${formatarMoeda(transacao.valor)}</strong>
+                                        <span class="tipo">${transacao.getTipoTransacao()}</span>
+                                        <strong class="valor">${formatarMoeda(transacao.getValor())}</strong>
                                     </div>
-                                    <time class="data">${formatarData(transacao.data, FormatoData.DIA_MES)}</time>
+                                    <time class="data">${formatarData(transacao.getData(), FormatoData.DIA_MES)}</time>
                                 </div>`
         }
         
