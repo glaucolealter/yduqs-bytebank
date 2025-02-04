@@ -1,7 +1,7 @@
 class Transacao {
     _tipoTransacao;
     _valor;
-    _data;
+    _data = new Date();
     _titularOrigem;
     _titularDestino;
     constructor(data, valor, tipoTransacao, titularOrigem, titularDestino) {
@@ -46,4 +46,10 @@ class Transacao {
         return ts;
     }
 }
+export var TipoTransacao;
+(function (TipoTransacao) {
+    TipoTransacao["DEPOSITO"] = "Dep\u00F3sito";
+    TipoTransacao["TRANSFERENCIA"] = "Transfer\u00EAncia";
+    TipoTransacao["PAGAMENTO_BOLETO"] = "Pagamento de Boleto";
+})(TipoTransacao || (TipoTransacao = {}));
 export default Transacao;

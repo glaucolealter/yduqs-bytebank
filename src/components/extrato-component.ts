@@ -1,6 +1,6 @@
 import Conta from "../models/Conta.js";
+import { GrupoTransacao } from "../models/Transacao.js";
 import { FormatoData } from "../types/FormatoData.js";
-import { GrupoTransacao } from "../types/transacao/GrupoTransacao.js";
 import { formatarData, formatarMoeda } from "../utils/formatters.js";
 
 const elementoRegistroTransacoesExtrato: HTMLElement = document.querySelector(".extrato .registro-transacoes");

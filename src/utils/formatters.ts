@@ -5,9 +5,9 @@ export function formatarMoeda(valor: number): string {
 }
 
 export function formatarData(data: Date, formato: FormatoData = FormatoData.PADRAO): string {
-    let dData = new Date(data);
+    //let dData = new Date(data);
     if (formato === FormatoData.DIA_SEMANA_DIA_MES_ANO) {
-        return dData.toLocaleDateString("pt-br", {
+        return data.toLocaleDateString("pt-br", {
             weekday: "long",
             day: "2-digit",
             month: "2-digit",
@@ -15,8 +15,9 @@ export function formatarData(data: Date, formato: FormatoData = FormatoData.PADR
         });
     }
     else if (formato === FormatoData.DIA_MES) {
-        return dData.toLocaleDateString("pt-br", { day: "2-digit", month: "2-digit" });
+        return data.toLocaleDateString("pt-br", { day: "2-digit", month: "2-digit" });
     }
 
-    return dData.toLocaleDateString("pt-br");
+    return data.toLocaleDateString("pt-br");
+
 }

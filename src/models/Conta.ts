@@ -1,11 +1,9 @@
-import Transacao from "./Transacao.js";
-import { TipoTransacao } from "../types/transacao/TipoTransacao.js";
-import { GrupoTransacao } from "../types/transacao/GrupoTransacao.js";
+import Transacao, { GrupoTransacao, TipoTransacao } from "./Transacao.js";
 
 class Conta {
     private _titular: string;
-    private _dataAbertura: Date;
-    private _dataEncerramento: Date;
+    private _dataAbertura: Date = new Date();
+    private _dataEncerramento: Date = new Date();
     private _saldo: number;
     private _limite: number;
     private _transacoes: Transacao[];
@@ -17,7 +15,7 @@ class Conta {
         this._dataEncerramento = null;
         this._limite = 1000;
         this._transacoes = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
-            if (key === "data") {
+            if (key === "_data") {
                 return new Date(value);
             }
             return value;
@@ -110,11 +108,11 @@ class Conta {
         );
         console.log(listaTransacoes.map(t => t instanceof Transacao));
 
-        const transacoesOrdenadas: Transacao[] = listaTransacoes.sort((t1, t2) => new Date(t2.getData()).getTime() - new Date(t1.getData()).getTime());
+        const transacoesOrdenadas: Transacao[] = listaTransacoes.sort((t1, t2) => t2.getData().getTime() - t1.getData().getTime());
         let labelAtualGrupoTransacao: string = "";
 
         for (let transacao of transacoesOrdenadas) {
-            let dataTransacao = new Date(transacao.getData());
+            let dataTransacao = transacao.getData();
             let labelGrupoTransacao: string = dataTransacao.toLocaleDateString("pt-br", { month: "long", year: "numeric" });
             if (labelAtualGrupoTransacao !== labelGrupoTransacao) {
                 labelAtualGrupoTransacao = labelGrupoTransacao;

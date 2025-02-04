@@ -1,9 +1,7 @@
-import { TipoTransacao } from "../types/transacao/TipoTransacao.js";
-
 class Transacao {
     private _tipoTransacao: TipoTransacao;
     private _valor: number;
-    private _data: Date;
+    private _data: Date = new Date();
     private _titularOrigem: string;
     private _titularDestino: string;
 
@@ -59,6 +57,17 @@ class Transacao {
         var ts = new Transacao(obj._data, obj._valor, obj._tipoTransacao, obj._titularOrigem, obj._titularDestino);
         return ts;
     }
+}
+
+export type GrupoTransacao = {
+    label: string;
+    transacoes: Transacao[];
+}
+
+export enum TipoTransacao {
+    DEPOSITO = "Depósito",
+    TRANSFERENCIA = "Transferência",
+    PAGAMENTO_BOLETO = "Pagamento de Boleto"
 }
 
 export default Transacao

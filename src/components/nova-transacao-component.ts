@@ -1,6 +1,5 @@
 import Conta from "../models/Conta.js";
-import { TipoTransacao } from "../types/transacao/TipoTransacao.js";
-import Transacao from "../models/Transacao.js";
+import Transacao, { TipoTransacao } from "../models/Transacao.js";
 import ExtratoComponent from "./extrato-component.js";
 import SaldoComponent from "./saldo-component.js";
 
